@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import { DBCONNECTION } from "./Config/Database";
 
-import { AppConfig } from "./app";
+import { AppConfig } from "./MainApp";
 import { EnvironmentalVariables } from "./Config/EnvironmentalVariables";
 
 const port = EnvironmentalVariables.PORT;
@@ -23,8 +23,6 @@ const server = app.listen(port, () => {
 
 // To protect my server from crashing when users do what they are not supposed to do
 process.on("uncaughtException", (error: Error) => {
-  // console.log("Stop here: uncaughtexpression")
-  // console.log(error)
   process.exit(1);
 });
 
