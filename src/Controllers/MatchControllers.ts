@@ -40,3 +40,23 @@ export const CreateMatch = AsyncHandler(
     }
   }
 );
+
+export const viewAllMatch = AsyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const Match = await MatchModels.find();
+
+    if (!Match) {
+      next(
+        new AppError({
+          message: "Couldn't get all Match",
+          httpcode: HTTPCODES.BAD_REQUEST,
+        })
+      );
+    }
+
+    return res.status(HTTPCODES.OK).json({
+      message: "All Matches successfully gotten",
+      data: Match,
+    });
+  }
+);
