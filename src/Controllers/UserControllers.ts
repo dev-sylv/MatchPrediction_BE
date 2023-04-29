@@ -142,3 +142,24 @@ export const updateOneUser = AsyncHandler(
     });
   }
 );
+
+// Delete a user:
+export const DeleteAUser = AsyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await UserModels.findByIdAndDelete(req.params.userID);
+
+    if (!user) {
+      next(
+        new AppError({
+          message: "An error occured in deleting this user",
+          httpcode: HTTPCODES.INTERNAL_SERVER_ERROR,
+        })
+      );
+    }
+
+    return res.status(201).json({
+      message: "Successfully deleted this user",
+      data: user,
+    });
+  }
+);
