@@ -176,3 +176,50 @@ export const PredictionTable = AsyncHandler(
     }
   }
 );
+
+//user prediction
+
+export const userPredictionTable = AsyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { userID } = req.params;
+      const prediction = await UserModels.findById(userID).populate({
+        path: "predict",
+      });
+      const match = await MatchModels.find();
+      if (!match) {
+        next(
+          new AppError({
+            message: "couldn't get match model",
+            httpcode: HTTPCODES.FORBIDDEN,
+          })
+        );
+      }
+      const table = match.filter((el) => {
+        return prediction!.predict.some(
+          (props) => el.scoreEntry === props.scoreEntry
+        );
+      });
+
+      //new model will contain what is inside our predict model
+
+      if (!table) {
+        next(
+          new AppError({
+            message: "couldn't get user prediction",
+            httpcode: HTTPCODES.FORBIDDEN,
+          })
+        );
+      }
+
+      return res.status(HTTPCODES.OK).json({
+        message: " Prediction table",
+        data: table,
+      });
+    } catch (error) {
+      return res.status(HTTPCODES.BAD_GATEWAY).json({
+        message: "Error",
+      });
+    }
+  }
+);
