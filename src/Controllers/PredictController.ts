@@ -54,3 +54,35 @@ export const CreatePrediction = AsyncHandler(
     }
   }
 );
+
+// Users can view his/her predictions
+export const ViewAllPredictions = AsyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { userID } = req.params;
+      const user = await UserModels.findById(userID).populate({
+        path: "predict",
+        options: {
+          sort: { createdAt: -1 },
+        },
+      });
+
+      if (!user) {
+        next(
+          new AppError({
+            message: "User not found",
+            httpcode: HTTPCODES.NOT_FOUND,
+          })
+        );
+      }
+      return res.status(HTTPCODES.OK).json({
+        message: "User prediction",
+        data: user?.predict,
+      });
+    } catch (error) {
+      return res.status(HTTPCODES.BAD_REQUEST).json({
+        message: "Error occurred in the view user prediction logic",
+      });
+    }
+  }
+);
