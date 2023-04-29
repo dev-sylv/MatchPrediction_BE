@@ -86,3 +86,30 @@ export const ViewAllPredictions = AsyncHandler(
     }
   }
 );
+
+//Allow users view all predictions (the admin is able to view all predictions)
+export const AllPredictions = AsyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = await PredictModel.find();
+
+      if (!user) {
+        next(
+          new AppError({
+            message: "User not found",
+            httpcode: HTTPCODES.NOT_FOUND,
+          })
+        );
+      }
+
+      return res.status(HTTPCODES.OK).json({
+        message: "All User Predictions",
+        data: user,
+      });
+    } catch (error) {
+      return res.status(404).json({
+        message: "Error",
+      });
+    }
+  }
+);
