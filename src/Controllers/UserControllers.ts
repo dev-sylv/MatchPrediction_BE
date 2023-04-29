@@ -20,3 +20,26 @@ export const GetUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+// Get a single User:
+export const GetSingleUser = AsyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const singleuser = await UserModels.findById(req.params.userID).populate({
+      path: "predict",
+    });
+
+    if (!singleuser) {
+      next(
+        new AppError({
+          message: "User not found",
+          httpcode: HTTPCODES.NOT_FOUND,
+        })
+      );
+    }
+
+    return res.status(200).json({
+      message: "Successfully got this single user",
+      data: singleuser,
+    });
+  }
+);
