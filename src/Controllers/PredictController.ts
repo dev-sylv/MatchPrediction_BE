@@ -91,20 +91,83 @@ export const ViewAllPredictions = AsyncHandler(
 export const AllPredictions = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = await PredictModel.find();
+      const { adminID } = req.params;
 
-      if (!user) {
+      const GetAdmin = await UserModels.findById(adminID);
+
+      const predictions = await PredictModel.find();
+
+      if (GetAdmin?.admin) {
+        if (!predictions) {
+          next(
+            new AppError({
+              message: "User not found",
+              httpcode: HTTPCODES.NOT_FOUND,
+            })
+          );
+        }
+      } else {
         next(
           new AppError({
-            message: "User not found",
-            httpcode: HTTPCODES.NOT_FOUND,
+            message: "You can't view others predictions",
+            httpcode: HTTPCODES.BAD_REQUESTs,
           })
         );
       }
 
       return res.status(HTTPCODES.OK).json({
         message: "All User Predictions",
-        data: user,
+        data: predictions,
+      });
+    } catch (error) {
+      return res.status(404).json({
+        message: "Error",
+      });
+    }
+  }
+);
+
+//the leaderboard, making comparisons between the user predict scores and the admin actual set score
+export const PredictionTable = AsyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // To get all predictions
+      const predict = await PredictModel.find();
+      if (!predict) {
+        next(
+          new AppError({
+            message: "Couldn't find the Prediction ",
+            httpcode: HTTPCODES.FORBIDDEN,
+          })
+        );
+      }
+      // To get all matches
+      const match = await MatchModels.find();
+      if (!match) {
+        next(
+          new AppError({
+            message: "Couldn't get a match ",
+            httpcode: HTTPCODES.FORBIDDEN,
+          })
+        );
+      }
+
+      // For admin to filter the predictions scores of users with the actual scores of the match
+      const table = match.filter((el) => {
+        return predict.some((props) => el.scoreEntry === props.scoreEntry);
+      });
+      if (!table) {
+        next(
+          new AppError({
+            message: "couldn't get a correct prediction ",
+            httpcode: HTTPCODES.FORBIDDEN,
+          })
+        );
+      }
+
+      return res.status(200).json({
+        message: " prediction table",
+        data: table,
       });
     } catch (error) {
       return res.status(404).json({
