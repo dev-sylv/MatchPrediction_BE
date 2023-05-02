@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import { EnvironmentalVariables } from "./EnvironmentalVariables";
+import { EnvironmentalVariables } from "./EnvironmentVariables";
 
 const LIVEURI = EnvironmentalVariables.MONGODB_STRING;
 

@@ -1,6 +1,6 @@
 import mongoose, { Schema, model } from "mongoose";
 
-import { iMatch } from "../AllInterfaces/AllInterfaces";
+import { iMatch } from "../Interfaces/AllInterfaces";
 
 const MatchSchema: Schema<iMatch> = new Schema(
   {

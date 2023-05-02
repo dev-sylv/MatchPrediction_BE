@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import { Ipredict } from "../AllInterfaces/AllInterfaces";
+import { Ipredict } from "../Interfaces/AllInterfaces";
 
 interface predict extends Ipredict, mongoose.Document {}
 

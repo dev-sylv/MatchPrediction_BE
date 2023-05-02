@@ -4,7 +4,7 @@ import cors from "cors";
 
 import morgan from "morgan";
 
-import UserRouter from "./Routes/UserRoute";
+import UserRouter from "./Routes/MatchRoutes";
 
 import MatchRouter from "./Routes/MatchRoutes";
 
@@ -12,7 +12,7 @@ import PredictRouter from "./Routes/PredictRoutes";
 
 import { AppError, HTTPCODES } from "./Utils/AppError";
 
-import { ErrorHandler } from "./Middlewares/ErrorHandler/ErrorHandler";
+import { ErrorHandler } from "./Middlewares/Errors/ErrorHandler";
 
 export const AppConfig = (app: Application) => {
   app.use(express.json());
