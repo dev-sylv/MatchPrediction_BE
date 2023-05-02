@@ -97,7 +97,7 @@ export const AllPredictions = AsyncHandler(
 
       const predictions = await PredictModel.find();
 
-      if (GetAdmin?.admin) {
+      if (GetAdmin?.isAdmin) {
         if (!predictions) {
           next(
             new AppError({
@@ -110,7 +110,7 @@ export const AllPredictions = AsyncHandler(
         next(
           new AppError({
             message: "You can't view others predictions",
-            httpcode: HTTPCODES.BAD_REQUESTs,
+            httpcode: HTTPCODES.BAD_REQUEST,
           })
         );
       }
