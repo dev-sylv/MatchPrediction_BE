@@ -44,6 +44,15 @@ const UserSchema = new mongoose.Schema<iUser>(
         ref: "predicts",
       },
     ],
+    OTP: {
+      type: String,
+    },
+    token: {
+      type: String,
+    },
+    verified: {
+      type: Boolean,
+    },
   },
   { timestamps: true }
 );

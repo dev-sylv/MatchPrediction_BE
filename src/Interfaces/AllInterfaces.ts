@@ -7,6 +7,9 @@ export interface iUser {
   password: string;
   confirmPassword: string;
   predict: any[];
+  token: string;
+  OTP: string;
+  verified: boolean;
 }
 
 export interface iMatch {
