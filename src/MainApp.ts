@@ -14,7 +14,13 @@ import { AppError, HTTPCODES } from "./Utils/AppError";
 
 import { ErrorHandler } from "./Middlewares/Errors/ErrorHandler";
 
+import ejs from "ejs";
+
 export const AppConfig = (app: Application) => {
+  app.set("view engine", "ejs");
+  app.use(express.static(`public`));
+  app.use(express.static(`${__dirname} public/css`));
+  app.use(express.static(`${__dirname} public/asset`));
   app.use(express.json());
   app.use(cors());
   app.use(morgan("dev"));

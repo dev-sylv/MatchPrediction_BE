@@ -38,7 +38,7 @@ export const VerifyUserAccount = async (NewUser: any) => {
     });
 
     const Mailer = {
-      from: "nicsylvia15f@gmail.com",
+      from: "Dev Sylvia ❤❤ <nicsylvia15f@gmail.com>",
       to: NewUser?.email,
       subject: "VERIFY YOUR ACCOUNT ⚽⚽⚽⚽",
       html: "",
