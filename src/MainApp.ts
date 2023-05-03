@@ -25,6 +25,10 @@ export const AppConfig = (app: Application) => {
   app.use(cors());
   app.use(morgan("dev"));
 
+  app.get("/view", (req, res) => {
+    res.render("start");
+  });
+
   // Configuring the routes:
   app.use("/api", UserRouter);
   app.use("/api", MatchRouter);
