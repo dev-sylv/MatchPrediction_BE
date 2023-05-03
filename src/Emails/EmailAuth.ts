@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
-import { oauth2 } from "googleapis/build/src/apis/oauth2";
+import path from "path";
+import ejs from "ejs";
 
 // Not changing
 const GOOGLE_REDIRECT: string = "https://developers.google.com/oauthplayground";
@@ -20,6 +21,8 @@ const oAuth = new google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT);
 
 oAuth.setCredentials({ access_token: GOOGLE_REFRESHTOKEN });
 
+const FrontendURL = "http://localhost:5173/confirm";
+
 // Verify each users on the platform:
 export const VerifyUserAccount = async (NewUser: any) => {
   try {
@@ -37,11 +40,26 @@ export const VerifyUserAccount = async (NewUser: any) => {
       },
     });
 
+    // Connecting the account verification ejs file so users can get the email in that format:
+    const LoadVerificationFile = path.join(
+      __dirname,
+      "../../views/AccountVerification.ejs"
+    );
+
+    //Use the ejs method to read the account verification ejs file
+    const ReadVerificationData = await ejs.renderFile(LoadVerificationFile, {
+      UserName: NewUser?.name,
+      UserEmail: NewUser?.email,
+      UserId: NewUser?._id,
+      UserToken: NewUser?.token,
+      Url: `${URL}/${NewUser?._id}/${NewUser?.token}`,
+    });
+
     const Mailer = {
       from: "Dev Sylvia ❤❤ <nicsylvia15f@gmail.com>",
       to: NewUser?.email,
       subject: "VERIFY YOUR ACCOUNT ⚽⚽⚽⚽",
-      html: "",
+      html: ReadVerificationData,
     };
 
     transporter
