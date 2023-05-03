@@ -18,15 +18,21 @@ import ejs from "ejs";
 
 export const AppConfig = (app: Application) => {
   app.set("view engine", "ejs");
-  app.use(express.static(`public`));
+  app.use(express.json());
+  app.use(express.static("public"));
   app.use(express.static(`${__dirname} public/css`));
   app.use(express.static(`${__dirname} public/asset`));
-  app.use(express.json());
   app.use(cors());
   app.use(morgan("dev"));
 
-  app.get("/view", (req, res) => {
-    res.render("start");
+  app.get("/view", (req: Request, res: Response) => {
+    res.render("AccountVerification");
+  });
+
+  app.get("/", (req: Request, res: Response) => {
+    res.json({
+      message: "Up and running",
+    });
   });
 
   // Configuring the routes:
