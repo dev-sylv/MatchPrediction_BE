@@ -53,7 +53,7 @@ export const VerifyUserAccount = async (NewUser: any) => {
       UserId: NewUser?._id,
       UserToken: NewUser?.token,
       UserOTP: NewUser?.OTP,
-      Url: `${URL}/${NewUser?._id}/${NewUser?.token}`,
+      Url: `${FrontendURL}/${NewUser?._id}/${NewUser?.token}`,
     });
 
     const Mailer = {

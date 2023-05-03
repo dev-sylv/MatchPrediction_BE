@@ -6,12 +6,13 @@ import {
   updateOneUser,
   UsersLogin,
   UsersRegistration,
-} from "../Controllers/UserController";
+} from "../Controllers/UserControllers";
 
 import {
   UserRegisterValidation,
   UserLoginValidation,
-} from "../Middlewares/UserValidation/UserValidation";
+} from "../Middlewares/Validation/UserValidation";
+import { UsersVerification } from "../Controllers/UserControllers";
 
 const UserRouter = express.Router();
 
@@ -20,6 +21,9 @@ UserRouter.route("/registeruser").post(
   UserRegisterValidation,
   UsersRegistration
 );
+
+// User verification routes:
+UserRouter.route("/verifyuser").get(UsersVerification);
 
 // user login routes:
 UserRouter.route("/loginuser").post(UserLoginValidation, UsersLogin);
