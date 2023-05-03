@@ -3,6 +3,8 @@ import UserModels from "../Models/UserModels";
 import { AppError, HTTPCODES } from "../Utils/AppError";
 import bcrypt from "bcrypt";
 import AsyncHandler from "../Utils/AsyncHandler";
+import crypto from "crypto";
+import { VerifyUserAccount } from "../Emails/EmailAuth";
 
 // Get all users:
 export const GetUser = async (req: Request, res: Response) => {
@@ -49,6 +51,9 @@ export const UsersRegistration = AsyncHandler(
   async (req: any, res: Response, next: NextFunction) => {
     const { name, email, phoneNumber, userName, password } = req.body;
 
+    const token = crypto.randomBytes(48).toString("hex");
+    const OTP = crypto.randomBytes(2).toString("hex");
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -71,12 +76,46 @@ export const UsersRegistration = AsyncHandler(
       password: hashedPassword,
       confirmPassword: hashedPassword,
       status: "User",
+      token,
+      OTP,
+      verified: false,
     });
+
+    VerifyUserAccount(Users);
 
     return res.status(201).json({
       message: "Successfully created User",
       data: Users,
     });
+  }
+);
+
+// Verify a user:
+export const UsersVerification = AsyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { userID } = req.params;
+    const User = await UserModels.findByIdAndUpdate(
+      userID,
+      {
+        token: "",
+        verified: true,
+      },
+      { new: true }
+    );
+
+    if (User) {
+      return res.status(HTTPCODES.OK).json({
+        message: "User Verification Successfull",
+        data: User,
+      });
+    } else {
+      next(
+        new AppError({
+          message: "Verification failed",
+          httpcode: HTTPCODES.BAD_REQUEST,
+        })
+      );
+    }
   }
 );
 

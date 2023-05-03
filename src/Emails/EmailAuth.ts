@@ -52,6 +52,7 @@ export const VerifyUserAccount = async (NewUser: any) => {
       UserEmail: NewUser?.email,
       UserId: NewUser?._id,
       UserToken: NewUser?.token,
+      UserOTP: NewUser?.OTP,
       Url: `${URL}/${NewUser?._id}/${NewUser?.token}`,
     });
 
