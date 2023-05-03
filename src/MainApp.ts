@@ -28,6 +28,9 @@ export const AppConfig = (app: Application) => {
   app.get("/view", (req: Request, res: Response) => {
     res.render("AccountVerification");
   });
+  app.get("/views", (req: Request, res: Response) => {
+    res.render("ResetPassword");
+  });
 
   app.get("/", (req: Request, res: Response) => {
     res.json({
