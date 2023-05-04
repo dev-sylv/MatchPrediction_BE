@@ -3,6 +3,7 @@ import {
   DeleteAUser,
   GetSingleUser,
   GetUser,
+  RefreshUserToken,
   updateOneUser,
   UsersLogin,
   UsersRegistration,
@@ -27,6 +28,9 @@ UserRouter.route("/:userID/verifyuser").get(UsersVerification);
 
 // user login routes:
 UserRouter.route("/loginuser").post(UserLoginValidation, UsersLogin);
+
+// User refresh routes:
+UserRouter.route("/refresh-token").post(RefreshUserToken);
 
 // get single user:
 UserRouter.route("/getsingleuser/:userID").get(GetSingleUser);
