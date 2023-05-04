@@ -189,7 +189,46 @@ export const UsersLogin = AsyncHandler(
 
 // Refresh the token again for every time they login:
 export const RefreshUserToken = AsyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {}
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { RefreshToken } = req.body;
+
+      jwt.verify(
+        RefreshToken,
+        "RefreshTokenSecret",
+        (err: any, payload: any) => {
+          if (err) {
+            throw err;
+          } else {
+            console.log(payload);
+
+            const AccessToken = jwt.sign(
+              {
+                id: payload.id,
+              },
+              "AccessTokenSecret",
+              {
+                expiresIn: "40s",
+              }
+            );
+
+            const RefreshToken = req.body.RefreshToken;
+
+            return res.status(HTTPCODES.OK).json({
+              message: "New token generated",
+              AccessTokenData: AccessToken,
+              RefreshTokenData: RefreshToken,
+            });
+          }
+        }
+      );
+    } catch (error) {
+      return res.status(HTTPCODES.INTERNAL_SERVER_ERROR).json({
+        message: "An error occured in genertaing new token",
+        data: error,
+      });
+    }
+  }
 );
 
 // Update one user:
