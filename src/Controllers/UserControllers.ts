@@ -136,6 +136,7 @@ export const UsersLogin = AsyncHandler(
     if (CheckPassword) {
       if (CheckUser) {
         if (CheckUser?.verified && CheckUser?.token === "") {
+          // The access token that expires every 2 mins
           const AccessToken = jwt.sign(
             {
               id: CheckUser?._id,
@@ -144,6 +145,14 @@ export const UsersLogin = AsyncHandler(
             {
               expiresIn: "40s",
             }
+          );
+          // The refresh token
+          const RefreshToken = jwt.sign(
+            {
+              id: CheckUser?._id,
+            },
+            "RefreshTokenSecret",
+            { expiresIn: "1m" }
           );
         } else {
           next(
