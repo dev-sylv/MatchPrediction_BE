@@ -24,7 +24,7 @@ export const AppConfig = (app: Application) => {
   app.use(morgan("dev"));
 
   app.get("/view", (req: Request, res: Response) => {
-    res.render("AccountVerification");
+    res.render("Testing");
   });
   app.get("/views", (req: Request, res: Response) => {
     res.render("ResetPassword");

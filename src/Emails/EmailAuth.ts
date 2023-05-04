@@ -3,33 +3,23 @@ import { google } from "googleapis";
 import path from "path";
 import ejs from "ejs";
 
-// // Not changing
-// const GOOGLE_REDIRECT: string = "https://developers.google.com/oauthplayground";
+// Not changing
+const GOOGLE_REDIRECT: string = "https://developers.google.com/oauthplayground";
 
-// // Not changing
-// const GOOGLE_ID: string =
-//   "199704572461-jv6rghgvgv7a60u1fvdc6noe07ldjrcc.apps.googleusercontent.com";
+// Not changing
+const GOOGLE_ID: string =
+  "24372524741-jn16e1i5tcijldtr4ipcn55rtje4am4j.apps.googleusercontent.com";
 
-// //   Not changing
-// const GOOGLE_SECRET: string = "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";
+//   Not changing
+const GOOGLE_SECRET: string = "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";
 
-// // Changing - Get it from google api , use the redirect link to work on that
-// const GOOGLE_REFRESHTOKEN: string =
-//   "1//04DDDwiCxBZAfCgYIARAAGAQSNwF-L9IrLXYMKbrNHKZ2rlj90cYg_1pZ6HospnMkruqQQumOjOzo6t2uqEdHOzYdSiDE4iJGKTU";
+// Changing - Get it from google api , use the redirect link to work on that
+const GOOGLE_REFRESHTOKEN: string =
+  "1//04GUtuw7JeuxYCgYIARAAGAQSNwF-L9IroTMvzhkr6oNRxm63Cima8oRzQU4tIsivTj9EPBmDL9qUatQODhDhkP0qbP4qut3HUdE";
 
-// const oAuth = new google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT);
+const oAuth = new google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT);
 
-// oAuth.setCredentials({ access_token: GOOGLE_REFRESHTOKEN });
-
-const GOOGLe_ID =
-  "717654860266-4jdicf1esea6bemik2s1duf52dh3tc76.apps.googleusercontent.com";
-const GOOGLe_SECRET = "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";
-const GOOGLE_REFRESHTOKEN =
-  "1//045PXVtNV4Jx4CgYIARAAGAQSNwF-L9IrOj_xB8pIeGiNUFtO3hwbAL-ni7vBD8tVsK6zkYrr-Ewl5Y_Y7agdwCCtbL929hsAQlg";
-const REDIRECT = "https://developers.google.com/oauthplayground";
-
-const oAuth = new google.auth.OAuth2(GOOGLe_ID, GOOGLe_SECRET, REDIRECT);
-oAuth.setCredentials({ refresh_token: GOOGLE_REFRESHTOKEN });
+oAuth.setCredentials({ access_token: GOOGLE_REFRESHTOKEN });
 
 const FrontendURL = "http://localhost:5173/confirm";
 
@@ -42,9 +32,9 @@ export const VerifyUserAccount = async (NewUser: any) => {
       service: "gmail",
       auth: {
         type: "OAUTH2",
-        user: "d1churchnetwork@gmail.com",
-        clientId: GOOGLe_ID,
-        clientSecret: GOOGLe_SECRET,
+        user: "nicsylvia15f@gmail.com",
+        clientId: GOOGLE_ID,
+        clientSecret: GOOGLE_SECRET,
         refreshToken: GOOGLE_REFRESHTOKEN,
         accessToken: GetAccessToken.token,
       },
