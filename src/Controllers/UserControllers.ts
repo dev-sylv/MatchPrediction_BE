@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import AsyncHandler from "../Utils/AsyncHandler";
 import crypto from "crypto";
 import { VerifyUserAccount } from "../Emails/EmailAuth";
+import jwt from "jsonwebtoken";
 
 // Get all users:
 export const GetUser = async (req: Request, res: Response) => {
@@ -90,6 +91,7 @@ export const UsersRegistration = AsyncHandler(
   }
 );
 
+// Once the user clicks on the activate button in the email, they are now verified users
 // Verify a user:
 export const UsersVerification = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -119,38 +121,53 @@ export const UsersVerification = AsyncHandler(
   }
 );
 
+// When users login, after 5 mins they are logged out
 // Users Login:
 export const UsersLogin = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
 
-    const CheckEmail = await UserModels.findOne({ email });
+    const { userID } = req.params;
 
-    if (!CheckEmail) {
-      next(
-        new AppError({
-          message: "User not Found",
-          httpcode: HTTPCODES.NOT_FOUND,
-        })
-      );
-    }
+    const CheckUser = await UserModels.findOne({ email });
 
-    const CheckPassword = await bcrypt.compare(password, CheckEmail!.password);
+    const CheckPassword = await bcrypt.compare(password, CheckUser!.password);
 
-    if (!CheckPassword) {
+    if (CheckPassword) {
+      if (CheckUser) {
+        if (CheckUser?.verified && CheckUser?.token === "") {
+          const AccessToken = jwt.sign(
+            {
+              id: CheckUser?._id,
+            },
+            "AccessTokenSecret",
+            {
+              expiresIn: "40s",
+            }
+          );
+        } else {
+          next(
+            new AppError({
+              message: "User not Verified",
+              httpcode: HTTPCODES.NOT_FOUND,
+            })
+          );
+        }
+      } else {
+        next(
+          new AppError({
+            message: "User not Found",
+            httpcode: HTTPCODES.NOT_FOUND,
+          })
+        );
+      }
+    } else {
       next(
         new AppError({
           message: "Email or password not correct",
           httpcode: HTTPCODES.CONFLICT,
         })
       );
-    }
-
-    if (CheckEmail && CheckPassword) {
-      return res.status(200).json({
-        message: "Login Successfull",
-        data: CheckEmail,
-      });
     }
   }
 );
