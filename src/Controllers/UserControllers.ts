@@ -154,6 +154,12 @@ export const UsersLogin = AsyncHandler(
             "RefreshTokenSecret",
             { expiresIn: "1m" }
           );
+
+          return res.status(HTTPCODES.OK).json({
+            message: "User Login successfull",
+            AccessToken: AccessToken,
+            RefreshToken: RefreshToken,
+          });
         } else {
           next(
             new AppError({
@@ -179,6 +185,11 @@ export const UsersLogin = AsyncHandler(
       );
     }
   }
+);
+
+// Refresh the token again for every time they login:
+export const RefreshUserToken = AsyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {}
 );
 
 // Update one user:
