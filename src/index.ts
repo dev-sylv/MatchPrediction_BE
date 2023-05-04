@@ -10,12 +10,6 @@ const app: Application = express();
 AppConfig(app);
 DBCONNECTION();
 
-app.get("/", (req: Request, res: Response) => {
-  return res.status(200).json({
-    message: "API READY FOR MATCHES PREDICTION",
-  });
-});
-
 const server = app.listen(port, () => {
   console.log("");
   console.log("Server is up and running on port", port);

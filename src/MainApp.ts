@@ -4,7 +4,7 @@ import cors from "cors";
 
 import morgan from "morgan";
 
-import UserRouter from "./Routes/MatchRoutes";
+import UserRouter from "./Routes/UserRoutes";
 
 import MatchRouter from "./Routes/MatchRoutes";
 
@@ -31,25 +31,25 @@ export const AppConfig = (app: Application) => {
   });
 
   app.get("/", (req: Request, res: Response) => {
-    res.json({
-      message: "Up and running",
+    return res.status(200).json({
+      message: "API READY FOR MATCHES PREDICTION",
     });
   });
 
   // Configuring the routes:
-  app.use("/api", UserRouter);
+  app.use("/api/users", UserRouter);
   app.use("/api", MatchRouter);
   app.use("/api", PredictRouter);
 
-  // app.all("*", (req: Request, res: Response, next: NextFunction) => {
-  //   next(
-  //     new AppError({
-  //       message: `This router ${req.originalUrl} does not exist`,
-  //       httpcode: HTTPCODES.NOT_FOUND,
-  //       name: "Route Error",
-  //       isOperational: false,
-  //     })
-  //   );
-  // });
-  // app.use(ErrorHandler);
+  app.all("*", (req: Request, res: Response, next: NextFunction) => {
+    next(
+      new AppError({
+        message: `This router ${req.originalUrl} does not exist`,
+        httpcode: HTTPCODES.NOT_FOUND,
+        name: "Route Error",
+        isOperational: false,
+      })
+    );
+  });
+  app.use(ErrorHandler);
 };
