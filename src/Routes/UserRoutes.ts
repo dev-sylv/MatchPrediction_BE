@@ -23,7 +23,7 @@ UserRouter.route("/registeruser").post(
 );
 
 // User verification routes:
-UserRouter.route("/verifyuser").get(UsersVerification);
+UserRouter.route("/:userID/verifyuser").get(UsersVerification);
 
 // user login routes:
 UserRouter.route("/loginuser").post(UserLoginValidation, UsersLogin);

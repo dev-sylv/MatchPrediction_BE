@@ -53,7 +53,7 @@ export const VerifyUserAccount = async (NewUser: any) => {
     // Connecting the account verification ejs file so users can get the email in that format:
     const LoadVerificationFile = path.join(
       __dirname,
-      "../../views/AccountVerification.ejs"
+      "../../views/ResetPassword.ejs"
     );
 
     //Use the ejs method to read the account verification ejs file
