@@ -1,8 +1,8 @@
 export interface iUser {
   name: string;
   email: string;
-  userName: string;
-  phoneNumber: number;
+  // userName: string;
+  // phoneNumber: number;
   isAdmin: boolean;
   password: string;
   confirmPassword: string;

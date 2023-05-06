@@ -21,7 +21,7 @@ const oAuth = new google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT);
 
 oAuth.setCredentials({ access_token: GOOGLE_REFRESHTOKEN });
 
-const FrontendURL = "http://localhost:5173/confirm";
+const FrontendURL = "http://localhost:5173/verify-user";
 
 // Verify each users on the platform:
 export const VerifyUserAccount = async (NewUser: any) => {

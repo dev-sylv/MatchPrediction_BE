@@ -17,18 +17,18 @@ const UserSchema = new mongoose.Schema<iUser>(
       trim: true,
       validate: [isEmail, "Please enter a valid email"],
     },
-    userName: {
-      type: String,
-      required: [true, "Please enter your Username"],
-    },
+    // userName: {
+    //   type: String,
+    //   required: [true, "Please enter your Username"],
+    // },
 
     isAdmin: {
       type: Boolean,
       default: false,
     },
-    phoneNumber: {
-      type: Number,
-    },
+    // phoneNumber: {
+    //   type: Number,
+    // },
     password: {
       type: String,
       required: [true, "Please enter your phone number"],

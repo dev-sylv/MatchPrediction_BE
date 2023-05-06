@@ -50,7 +50,8 @@ export const GetSingleUser = AsyncHandler(
 // Users Registration:
 export const UsersRegistration = AsyncHandler(
   async (req: any, res: Response, next: NextFunction) => {
-    const { name, email, phoneNumber, userName, password } = req.body;
+    // const { name, email, phoneNumber, userName, password } = req.body;
+    const { name, email, password } = req.body;
 
     const token = crypto.randomBytes(48).toString("hex");
     const OTP = crypto.randomBytes(2).toString("hex");
@@ -72,8 +73,7 @@ export const UsersRegistration = AsyncHandler(
     const Users = await UserModels.create({
       name,
       email,
-      userName,
-      phoneNumber: "234" + phoneNumber,
+
       password: hashedPassword,
       confirmPassword: hashedPassword,
       status: "User",
@@ -157,6 +157,7 @@ export const UsersLogin = AsyncHandler(
 
           return res.status(HTTPCODES.OK).json({
             message: "User Login successfull",
+            data: CheckUser,
             AccessToken: AccessToken,
             RefreshToken: RefreshToken,
           });

@@ -18,10 +18,7 @@ import { UsersVerification } from "../Controllers/UserControllers";
 const UserRouter = express.Router();
 
 // user registration routes:
-UserRouter.route("/registeruser").post(
-  UserRegisterValidation,
-  UsersRegistration
-);
+UserRouter.route("/registeruser").post(UsersRegistration);
 
 // User verification routes:
 UserRouter.route("/:userID/verifyuser").get(UsersVerification);
