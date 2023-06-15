@@ -29,7 +29,6 @@ export const CreatePrediction = AsyncHandler(
           teamBScore,
           amount,
           prize: match?.Odds! * amount,
-
           scoreEntry: `${teamAScore} VS ${teamBScore}`,
         });
 
@@ -87,7 +86,7 @@ export const ViewAllPredictions = AsyncHandler(
   }
 );
 
-//Allow users view all predictions (the admin is able to view all predictions)
+// (the admin is able to view all predictions)
 export const AllPredictions = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -159,14 +158,14 @@ export const PredictionTable = AsyncHandler(
       if (!table) {
         next(
           new AppError({
-            message: "couldn't get a correct prediction ",
+            message: "Couldn't get a correct prediction ",
             httpcode: HTTPCODES.FORBIDDEN,
           })
         );
       }
 
       return res.status(200).json({
-        message: " prediction table",
+        message: "Prediction table",
         data: table,
       });
     } catch (error) {
@@ -178,7 +177,6 @@ export const PredictionTable = AsyncHandler(
 );
 
 //user prediction
-
 export const userPredictionTable = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     try {

@@ -23,11 +23,8 @@ export const AppConfig = (app: Application) => {
   app.use(cors());
   app.use(morgan("dev"));
 
-  app.get("/view", (req: Request, res: Response) => {
-    res.render("Testing");
-  });
   app.get("/views", (req: Request, res: Response) => {
-    res.render("ResetPassword");
+    res.render("AccountVerification");
   });
 
   app.get("/", (req: Request, res: Response) => {

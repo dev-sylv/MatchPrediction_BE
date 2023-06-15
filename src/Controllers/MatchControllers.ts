@@ -7,7 +7,7 @@ import AsyncHandler from "../Utils/AsyncHandler";
 // ADMIN CREATE MATCHES && Allow an admin upload matches for the particular match week
 export const CreateMatch = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { teamA, teamB, teamAScore, teamBScore, Odds, dateTime } = req.body;
+    const { teamA, teamB, teamAScore, teamBScore, Odds } = req.body;
 
     const user = await UserModels.findById(req.params.userID);
 
@@ -61,58 +61,6 @@ export const viewAllMatch = AsyncHandler(
   }
 );
 
-// Allow an admin automatically update the scores in real time
-export const UpdateScoresOfMatches = AsyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { teamAScore, teamBScore } = req.body;
-
-    const GetAdmin = await UserModels.findById(req.params.userID);
-    const CurrentMatch = await MatchModels.findById(req.params.matchID);
-
-    if (GetAdmin?.isAdmin) {
-      if (CurrentMatch && CurrentMatch.startPlay) {
-        if (CurrentMatch?.stopPlay) {
-          next(
-            new AppError({
-              message: "Match has ended",
-              httpcode: HTTPCODES.BAD_REQUEST,
-            })
-          );
-        } else {
-          const Matchscores = await MatchModels.findByIdAndUpdate(
-            req.params.matchID,
-            {
-              teamAScore,
-              teamBScore,
-              scoreEntry: `${teamAScore} VS ${teamBScore}`,
-            },
-            { new: true }
-          );
-
-          return res.status(HTTPCODES.OK).json({
-            message: "Match scores has been updated successfully",
-            data: Matchscores,
-          });
-        }
-      } else {
-        next(
-          new AppError({
-            message: "March has not started",
-            httpcode: HTTPCODES.BAD_REQUEST,
-          })
-        );
-      }
-    } else {
-      next(
-        new AppError({
-          message: "You are not an admin",
-          httpcode: HTTPCODES.UNAUTHORIZED,
-        })
-      );
-    }
-  }
-);
-
 // Allow an admin start matches and for the matches to end automatically
 export const UpdateStartMatch = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -148,6 +96,58 @@ export const UpdateStartMatch = AsyncHandler(
       next(
         new AppError({
           message: "You are not an admin, you can't start a match",
+          httpcode: HTTPCODES.UNAUTHORIZED,
+        })
+      );
+    }
+  }
+);
+
+// Allow an admin automatically update the scores in real time
+export const UpdateScoresOfMatches = AsyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { teamAScore, teamBScore } = req.body;
+
+    const GetAdmin = await UserModels.findById(req.params.userID);
+    const CurrentMatch = await MatchModels.findById(req.params.matchID);
+
+    if (GetAdmin?.isAdmin) {
+      if (CurrentMatch && CurrentMatch.startPlay) {
+        if (CurrentMatch?.stopPlay) {
+          next(
+            new AppError({
+              message: "Match has ended",
+              httpcode: HTTPCODES.BAD_REQUEST,
+            })
+          );
+        } else {
+          const Matchscores = await MatchModels.findByIdAndUpdate(
+            CurrentMatch,
+            {
+              teamAScore,
+              teamBScore,
+              scoreEntry: `${teamAScore} VS ${teamBScore}`,
+            },
+            { new: true }
+          );
+
+          return res.status(HTTPCODES.OK).json({
+            message: "Match scores has been updated successfully",
+            data: Matchscores,
+          });
+        }
+      } else {
+        next(
+          new AppError({
+            message: "March has not started",
+            httpcode: HTTPCODES.BAD_REQUEST,
+          })
+        );
+      }
+    } else {
+      next(
+        new AppError({
+          message: "You are not an admin",
           httpcode: HTTPCODES.UNAUTHORIZED,
         })
       );
