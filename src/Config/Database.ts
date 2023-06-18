@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 import { EnvironmentalVariables } from "./EnvironmentVariables";
 
-const LIVEURI = EnvironmentalVariables.MONGODB_STRING;
+// const LIVEURI = EnvironmentalVariables.MONGODB_STRING;
+const LIVEURI = "mongodb://0.0.0.0:27017/FootballPredictionServer";
 
 export const DBCONNECTION = async () => {
   try {

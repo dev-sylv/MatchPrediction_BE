@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import AsyncHandler from "../Utils/AsyncHandler";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-import { veriryAccount } from "../Emails/EmailAuth";
+import { OTPAccountVerification } from "../Emails/EmailAuth";
 
 // Get all users:
 export const GetUser = async (req: Request, res: Response) => {
@@ -50,7 +50,6 @@ export const GetSingleUser = AsyncHandler(
 // Users Registration:
 export const UsersRegistration = AsyncHandler(
   async (req: any, res: Response, next: NextFunction) => {
-    // const { name, email, phoneNumber, userName, password } = req.body;
     const { name, email, password } = req.body;
 
     const token = crypto.randomBytes(48).toString("hex");
@@ -73,7 +72,6 @@ export const UsersRegistration = AsyncHandler(
     const Users = await UserModels.create({
       name,
       email,
-
       password: hashedPassword,
       confirmPassword: hashedPassword,
       status: "User",
@@ -81,7 +79,8 @@ export const UsersRegistration = AsyncHandler(
       OTP,
       verified: false,
     });
-    veriryAccount(Users);
+    OTPAccountVerification(Users);
+
     return res.status(201).json({
       message: "Successfully created User",
       data: Users,
@@ -119,117 +118,116 @@ export const UsersVerification = AsyncHandler(
   }
 );
 
-// When users login, after 5 mins they are logged out
+//  When users login, after 5 mins they are logged out
 // Users Login:
-// export const UsersLogin = AsyncHandler(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const { email, password } = req.body;
+export const UsersLogin = AsyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body;
 
-//     const { userID } = req.params;
+    const { userID } = req.params;
 
-//     const CheckUser = await UserModels.findOne({ email });
+    const CheckUser = await UserModels.findOne({ email });
 
-//     const CheckPassword = await bcrypt.compare(password, CheckUser!.password);
+    const CheckPassword = await bcrypt.compare(password, CheckUser!.password);
 
-//     if (CheckPassword) {
-//       if (CheckUser) {
-//         if (CheckUser?.verified && CheckUser?.token === "") {
-//           // The access token that expires every 2 mins
-//           const AccessToken = jwt.sign(
-//             {
-//               id: CheckUser?._id,
-//             },
-//             "AccessTokenSecret",
-//             {
-//               expiresIn: "40s",
-//             }
-//           );
-//           // The refresh token
-//           const RefreshToken = jwt.sign(
-//             {
-//               id: CheckUser?._id,
-//             },
-//             "RefreshTokenSecret",
-//             { expiresIn: "1m" }
-//           );
+    if (CheckPassword) {
+      if (CheckUser) {
+        if (CheckUser?.verified && CheckUser?.token === "") {
+          // The access token that expires every 2 mins
+          const AccessToken = jwt.sign(
+            {
+              id: CheckUser?._id,
+            },
+            "AccessTokenSecret",
+            {
+              expiresIn: "40s",
+            }
+          );
+          // The refresh token
+          const RefreshToken = jwt.sign(
+            {
+              id: CheckUser?._id,
+            },
+            "RefreshTokenSecret",
+            { expiresIn: "1m" }
+          );
 
-//           return res.status(HTTPCODES.OK).json({
-//             message: "User Login successfull",
-//             data: CheckUser,
-//             AccessToken: AccessToken,
-//             RefreshToken: RefreshToken,
-//           });
-//         } else {
-//           next(
-//             new AppError({
-//               message: "User not Verified",
-//               httpcode: HTTPCODES.NOT_FOUND,
-//             })
-//           );
-//         }
-//       } else {
-//         next(
-//           new AppError({
-//             message: "User not Found",
-//             httpcode: HTTPCODES.NOT_FOUND,
-//           })
-//         );
-//       }
-//     } else {
-//       next(
-//         new AppError({
-//           message: "Email or password not correct",
-//           httpcode: HTTPCODES.CONFLICT,
-//         })
-//       );
-//     }
-//   }
-// );
+          return res.status(HTTPCODES.OK).json({
+            message: "User Login successfull",
+            data: CheckUser,
+            AccessToken: AccessToken,
+            RefreshToken: RefreshToken,
+          });
+        } else {
+          next(
+            new AppError({
+              message: "User not Verified",
+              httpcode: HTTPCODES.NOT_FOUND,
+            })
+          );
+        }
+      } else {
+        next(
+          new AppError({
+            message: "User not Found",
+            httpcode: HTTPCODES.NOT_FOUND,
+          })
+        );
+      }
+    } else {
+      next(
+        new AppError({
+          message: "Email or password not correct",
+          httpcode: HTTPCODES.CONFLICT,
+        })
+      );
+    }
+  }
+);
 
 // Refresh the token again for every time they login:
-// export const RefreshUserToken = AsyncHandler(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//       const { RefreshToken } = req.body;
+export const RefreshUserToken = AsyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { RefreshToken } = req.body;
 
-//       jwt.verify(
-//         RefreshToken,
-//         "RefreshTokenSecret",
-//         (err: any, payload: any) => {
-//           if (err) {
-//             throw err;
-//           } else {
-//             console.log(payload);
+      jwt.verify(
+        RefreshToken,
+        "RefreshTokenSecret",
+        (err: any, payload: any) => {
+          if (err) {
+            throw err;
+          } else {
+            console.log(payload);
 
-//             const AccessToken = jwt.sign(
-//               {
-//                 id: payload.id,
-//               },
-//               "AccessTokenSecret",
-//               {
-//                 expiresIn: "40s",
-//               }
-//             );
+            const AccessToken = jwt.sign(
+              {
+                id: payload.id,
+              },
+              "AccessTokenSecret",
+              {
+                expiresIn: "40s",
+              }
+            );
 
-//             const RefreshToken = req.body.RefreshToken;
+            const RefreshToken = req.body.RefreshToken;
 
-//             return res.status(HTTPCODES.OK).json({
-//               message: "New token generated",
-//               AccessTokenData: AccessToken,
-//               RefreshTokenData: RefreshToken,
-//             });
-//           }
-//         }
-//       );
-//     } catch (error) {
-//       return res.status(HTTPCODES.INTERNAL_SERVER_ERROR).json({
-//         message: "An error occured in genertaing new token",
-//         data: error,
-//       });
-//     }
-//   }
-// );
-
+            return res.status(HTTPCODES.OK).json({
+              message: "New token generated",
+              AccessTokenData: AccessToken,
+              RefreshTokenData: RefreshToken,
+            });
+          }
+        }
+      );
+    } catch (error) {
+      return res.status(HTTPCODES.INTERNAL_SERVER_ERROR).json({
+        message: "An error occured in genertaing new token",
+        data: error,
+      });
+    }
+  }
+);
 // Update one user:
 export const updateOneUser = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {

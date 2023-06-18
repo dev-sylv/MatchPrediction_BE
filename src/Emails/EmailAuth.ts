@@ -23,7 +23,7 @@ oAuth.setCredentials({ access_token: GOOGLE_REFRESHTOKEN });
 
 // Verify each users on the platform:
 
-export const veriryAccount = async (createUser: any) => {
+export const OTPAccountVerification = async (createUser: any) => {
   try {
     oAuth.setCredentials({
       access_token: GOOGLE_REFRESHTOKEN,
@@ -53,10 +53,10 @@ export const veriryAccount = async (createUser: any) => {
     transporter
       .sendMail(mailerOptions)
       .then(() => {
-        console.log("Email sent..");
+        console.log("OTP sent to Email successfully..");
       })
       .catch((err) => {
-        console.log("transporter Error", err);
+        console.log("Email transporter Error: ", err);
       });
   } catch (error) {
     console.log("An error occured in sending email", error);

@@ -12,7 +12,7 @@ DBCONNECTION();
 
 const server = app.listen(port, () => {
   console.log("");
-  console.log("Server is up and running on port", port);
+  console.log(`Server is running and listening on port ${port}`);
 });
 
 // To protect my server from crashing when users do what they are not supposed to do
