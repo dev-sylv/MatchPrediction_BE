@@ -8,14 +8,14 @@ const GOOGLE_REDIRECT: string = "https://developers.google.com/oauthplayground";
 
 // Not changing
 const GOOGLE_ID: string =
-  "367762056277-jtls6icdrtvdrpu29988a4p41cebi5r8.apps.googleusercontent.com";
+  "24372524741-jn16e1i5tcijldtr4ipcn55rtje4am4j.apps.googleusercontent.com";
 
 //   Not changing
-const GOOGLE_SECRET: string = "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";
+const GOOGLE_SECRET: string = "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";
 
 // Changing - Get it from google api , use the redirect link to work on that
 const GOOGLE_REFRESHTOKEN: string =
-  "1//0438HcdvFoP0YCgYIARAAGAQSNwF-L9IrjgAfqFuy4QQtoyPwsKgJZNuJu4bcQs2dL4sO-MpIMg6kg1cgY-6SgciBT6H1C5pjoF4";
+  "1//04GUtuw7JeuxYCgYIARAAGAQSNwF-L9IroTMvzhkr6oNRxm63Cima8oRzQU4tIsivTj9EPBmDL9qUatQODhDhkP0qbP4qut3HUdE";
 
 const oAuth = new google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT);
 
@@ -25,16 +25,13 @@ oAuth.setCredentials({ access_token: GOOGLE_REFRESHTOKEN });
 
 export const OTPAccountVerification = async (createUser: any) => {
   try {
-    oAuth.setCredentials({
-      access_token: GOOGLE_REFRESHTOKEN,
-    });
-    const getToken = await oAuth.getAccessToken();
+    const getToken: any = await oAuth.getAccessToken();
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
         type: "OAuth2",
-        user: "sannifortune11@gmail.com",
+        user: "nicsylvia15f@gmail.com",
         clientId: GOOGLE_ID,
         clientSecret: GOOGLE_SECRET,
         refreshToken: GOOGLE_REFRESHTOKEN,
@@ -42,12 +39,24 @@ export const OTPAccountVerification = async (createUser: any) => {
       },
     });
 
+    // Connecting the ejs file:
+    const OTPVerificationEJS = path.join(
+      __dirname,
+      "../../views/AccountVerification.ejs"
+    );
+
+    // To render the file:
+    const PassEJSdetails = await ejs.renderFile(OTPVerificationEJS, {
+      name: createUser?.name,
+      email: createUser?.email,
+      userOTP: createUser?.OTP,
+    });
+
     const mailerOptions = {
-      from: "Predit Match <sannifortune11gmail.com>",
+      from: "Predit Match <nicsylvia15f@gmail.com>",
       to: createUser?.email,
-      subject: "Hello",
-      text: "Verify your Account",
-      html: `<b>OTP: ${createUser?.OTP}</b>`,
+      subject: "Account Verification",
+      html: PassEJSdetails,
     };
 
     transporter
