@@ -5,90 +5,114 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Account Verification</title>
-  </head>
-  <body>
-    <container
-      style="
+    <style>
+      .container {
+        width: 100%;
+        height: 100vh;
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+          sans-serif;
+        background-image: url("https://i.pinimg.com/originals/ee/50/de/ee50dec983d90280a90a40afbe5be29d.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      img {
+        width: 100px;
+        height: 100px;
+      }
+      .wrapper {
+        background-color: white;
         display: flex;
-        align-items: center;
-        justify-content: center;
         flex-direction: column;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      "
-    >
-      <div width="650px" height="250px" style="border-radius: 4px">
-        <img
-          src="https://res.cloudinary.com/dev-sylvia/image/upload/v1686840432/football-logo_rzlwbu.jpg"
-          width="250px"
-          height="120px"
-          style="padding-top: 5px; object-fit: contain; border: 0"
-          alt=""
-        />
-      </div>
+        border-radius: 5px 5px 0px 0px;
+        align-items: center;
+        width: 300px;
+        margin-top: 20px;
+        height: auto;
+        border-radius: 0px 0px 5px 5px;
+      }
 
-      <div
-        style="
-          background-image: url(https://i.pinimg.com/originals/ee/50/de/ee50dec983d90280a90a40afbe5be29d.jpg);
+      @media (max-width: 500px) {
+        p {
+          font-size: 15px;
+          width: 300px;
+        }
+        .container {
+          background-image: none;
+        }
+        .cheer {
+          padding: 0;
           display: flex;
           justify-content: center;
           align-items: center;
-          flex-direction: column;
+          height: 150px;
+        }
+        .wrapper {
           width: 350px;
-          height: 600px;
-        "
-      >
-        <div
-          style="
-            background-color: white;
-            display: flex;
-            flex-direction: column;
-            border-radius: 5px 5px 0px 0px;
-            align-items: center;
-            width: 300px;
-            padding: 10px 0px 10px 0px;
-            margin-top: 20px;
-          "
-        >
-          <h2><b>Hi <%= name %></b></h2>
-          <h2 style="margin: 0"><b>Congratulations!!!</b></h2>
+          flex-direction: column;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
 
-          <p style="width: 280px; text-align: center">
+      .cheer {
+        width: 100%;
+        background-color: #2e53ef;
+        margin-top: 10px;
+        border-radius: 0px 0px 5px 5px;
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+      }
+
+      .contents {
+        display: flex;
+        justify-self: center;
+        flex-direction: column;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="wrapper">
+        <div class="contents">
+          <h2><b>Hi <%= name %></b></h2>
+          <br />
+          <h2 style="margin: 0"><b>Congratulations!!!</b></h2>
+          <br />
+          <p style="text-align: center; margin: 0">
             <b>Thank you for creating an account with us.</b>
           </p>
-
-          <p style="width: 270px; text-align: center; font-weight: 500">
+          <br />
+          <p style="text-align: center; font-weight: 500; margin: 0">
             Please verify that your email address is <b><%= email %></b>, and
-            that you entered it when signing up on our Football Prediction Site.
+            that you entered it when <br />
+            signing up on our Football Prediction Site.
           </p>
-          <p style="width: 200px; text-align: center; font-weight: 500">
-            Your OTP IS : <%= userOTP %>
+          <br />
+          <p style="text-align: center; font-weight: 500; margin: 0">
+            <strong>Your OTP IS</strong>
+            <b style="font-size: 20px">: <%= userOTP %></b>
           </p>
 
           <br />
 
           <br />
-          <p style="width: 270px; text-align: center">
+          <p style="text-align: center; margin: 0">
             Remember, we don't just predict the game, we enhance your football
             journey!
           </p>
         </div>
-
-        <div
-          style="
-            background-color: #2e53ef;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 300px;
-            border-radius: 0px 0px 5px 5px;
-            padding: 10px 0px 10px 0px;
-          "
-        >
-          <p style="margin: 0">Cheers to Healthy Predictions!</p>
-          <p style="margin: 0">The Prediction Team</p>
+        <div class="cheer">
+          Cheers to Healthy Predictions! <br />
+          The Prediction Team
         </div>
       </div>
-    </container>
+    </div>
   </body>
 </html>
