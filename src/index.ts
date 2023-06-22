@@ -4,7 +4,7 @@ import { DBCONNECTION } from "./Config/Database";
 import { AppConfig } from "./MainApp";
 import { EnvironmentalVariables } from "./Config/EnvironmentVariables";
 
-const port = EnvironmentalVariables.PORT;
+const port = EnvironmentalVariables.PORT || 2001;
 
 const app: Application = express();
 AppConfig(app);

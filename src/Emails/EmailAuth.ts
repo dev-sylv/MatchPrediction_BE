@@ -42,7 +42,7 @@ export const OTPAccountVerification = async (createUser: any) => {
     // Connecting the ejs file:
     const OTPVerificationEJS = path.join(
       __dirname,
-      "../../views/AccountVerification.ejs"
+      "../../views/Otp.ejs"
     );
 
     // To render the file:
