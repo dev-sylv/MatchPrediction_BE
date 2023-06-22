@@ -43,7 +43,7 @@ const OTPAccountVerification = (createUser) => __awaiter(void 0, void 0, void 0,
             },
         });
         // Connecting the ejs file:
-        const OTPVerificationEJS = path_1.default.join(__dirname, "../../views/AccountVerification.ejs");
+        const OTPVerificationEJS = path_1.default.join(__dirname, "../../views/Otp.ejs");
         // To render the file:
         const PassEJSdetails = yield ejs_1.default.renderFile(OTPVerificationEJS, {
             name: createUser === null || createUser === void 0 ? void 0 : createUser.name,

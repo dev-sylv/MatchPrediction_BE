@@ -14,8 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DBCONNECTION = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
-// const LIVEURI = EnvironmentalVariables.MONGODB_STRING;
-const LIVEURI = "mongodb://0.0.0.0:27017/FootballPredictionServer";
+const EnvironmentVariables_1 = require("./EnvironmentVariables");
+const LIVEURI = EnvironmentVariables_1.EnvironmentalVariables.MONGODB_STRING;
+// const LIVEURI = "mongodb://0.0.0.0:27017/FootballPredictionServer";
+// done
 const DBCONNECTION = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const conn = yield mongoose_1.default.connect(LIVEURI);

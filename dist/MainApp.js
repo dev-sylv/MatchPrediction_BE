@@ -21,7 +21,8 @@ const AppConfig = (app) => {
     app.use((0, cors_1.default)());
     app.use((0, morgan_1.default)("dev"));
     app.get("/views", (req, res) => {
-        res.render("AccountVerification");
+        // res.render("AccountVerification");
+        res.render("Otp");
     });
     app.get("/", (req, res) => {
         return res.status(200).json({

@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const Database_1 = require("./Config/Database");
 const MainApp_1 = require("./MainApp");
 const EnvironmentVariables_1 = require("./Config/EnvironmentVariables");
-const port = EnvironmentVariables_1.EnvironmentalVariables.PORT;
+const port = EnvironmentVariables_1.EnvironmentalVariables.PORT || 2001;
 const app = (0, express_1.default)();
 (0, MainApp_1.AppConfig)(app);
 (0, Database_1.DBCONNECTION)();
