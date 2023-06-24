@@ -5,7 +5,7 @@ import {
   GetUser,
   // RefreshUserToken,
   updateOneUser,
-  // UsersLogin,
+  UsersLogin,
   UsersRegistration,
 } from "../Controllers/UserControllers";
 
@@ -24,7 +24,7 @@ UserRouter.route("/registeruser").post(UsersRegistration);
 UserRouter.route("/:userID/verifyuser").get(UsersVerification);
 
 // user login routes:
-// UserRouter.route("/loginuser").post(UserLoginValidation, UsersLogin);
+UserRouter.route("/loginuser").post(UserLoginValidation, UsersLogin);
 
 // User refresh routes:
 // UserRouter.route("/refresh-token").post(RefreshUserToken);
