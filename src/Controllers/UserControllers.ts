@@ -96,7 +96,7 @@ export const UsersVerification = AsyncHandler(
     const User = await UserModels.findByIdAndUpdate(
       userID,
       {
-        token: "",
+        OTP: "",
         verified: true,
       },
       { new: true }
@@ -124,39 +124,37 @@ export const UsersLogin = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
 
-    const { userID } = req.params;
-
     const CheckUser = await UserModels.findOne({ email });
 
     const CheckPassword = await bcrypt.compare(password, CheckUser!.password);
 
     if (CheckPassword) {
       if (CheckUser) {
-        if (CheckUser?.verified && CheckUser?.token === "") {
+        if (CheckUser?.verified && CheckUser?.OTP === "") {
           // The access token that expires every 2 mins
-          const AccessToken = jwt.sign(
-            {
-              id: CheckUser?._id,
-            },
-            "AccessTokenSecret",
-            {
-              expiresIn: "40s",
-            }
-          );
+          // const AccessToken = jwt.sign(
+          //   {
+          //     id: CheckUser?._id,
+          //   },
+          //   "AccessTokenSecret",
+          //   {
+          //     expiresIn: "40s",
+          //   }
+          // );
           // The refresh token
-          const RefreshToken = jwt.sign(
-            {
-              id: CheckUser?._id,
-            },
-            "RefreshTokenSecret",
-            { expiresIn: "1m" }
-          );
+          // const RefreshToken = jwt.sign(
+          //   {
+          //     id: CheckUser?._id,
+          //   },
+          //   "RefreshTokenSecret",
+          //   { expiresIn: "1m" }
+          // );
 
           return res.status(HTTPCODES.OK).json({
             message: "User Login successfull",
             data: CheckUser,
-            AccessToken: AccessToken,
-            RefreshToken: RefreshToken,
+            // AccessToken: AccessToken,
+            // RefreshToken: RefreshToken,
           });
         } else {
           next(
