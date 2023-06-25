@@ -8,7 +8,7 @@ const LOCALURL = "mongodb://0.0.0.0:27017/FootballPredictionServer";
 
 export const DBCONNECTION = async () => {
   try {
-    const conn = await mongoose.connect(LIVEURI);
+    const conn = await mongoose.connect(LOCALURL);
     console.log("");
     console.log(`Database is connected to ${conn.connection.host}`);
   } catch (error) {
