@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import isEmail from "validator/lib/isEmail";
 import { iUser } from "../Interfaces/AllInterfaces";
 
+
+
 const UserSchema = new mongoose.Schema<iUser>(
   {
     name: {
