@@ -12,20 +12,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DBCONNECTION = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
-const EnvironmentVariables_1 = require("./EnvironmentVariables");
-const LIVEURI = EnvironmentVariables_1.EnvironmentalVariables.MONGODB_STRING;
-const LOCALURL = "mongodb://0.0.0.0:27017/FootballPredictionServer";
-// done
-const DBCONNECTION = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const conn = yield mongoose_1.default.connect(LIVEURI);
-        console.log("");
-        console.log(`Database is connected to ${conn.connection.host}`);
+exports.SendMessage = void 0;
+const MessageModel_1 = __importDefault(require("../Models/MessageModel"));
+const AsyncHandler_1 = __importDefault(require("../Utils/AsyncHandler"));
+const AppError_1 = require("../Utils/AppError");
+exports.SendMessage = (0, AsyncHandler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name, email, message } = req.body;
+    const Message = yield MessageModel_1.default.create({
+        name,
+        email,
+        message,
+    });
+    if (!Message) {
+        next(new AppError_1.AppError({
+            message: "Message Not sent",
+            httpcode: AppError_1.HTTPCODES.INTERNAL_SERVER_ERROR,
+        }));
     }
-    catch (error) {
-        console.log(`${error}`);
-    }
-});
-exports.DBCONNECTION = DBCONNECTION;
+    return res.status(AppError_1.HTTPCODES.OK).json({
+        message: "Message Successfully sent",
+        data: Message,
+    });
+}));
