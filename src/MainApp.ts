@@ -13,6 +13,7 @@ import PredictRouter from "./Routes/PredictRoutes";
 import { AppError, HTTPCODES } from "./Utils/AppError";
 
 import { ErrorHandler } from "./Middlewares/Errors/ErrorHandler";
+import messageRouter from "./Routes/MessageRoute";
 
 export const AppConfig = (app: Application) => {
   app.set("view engine", "ejs");
@@ -37,6 +38,7 @@ export const AppConfig = (app: Application) => {
   // Configuring the routes:
   app.use("/api/users", UserRouter);
   app.use("/api", MatchRouter);
+  app.use("/api", messageRouter);
   app.use("/api", PredictRouter);
 
   app.all("*", (req: Request, res: Response, next: NextFunction) => {
