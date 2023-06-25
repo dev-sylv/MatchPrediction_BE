@@ -1,7 +1,5 @@
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
-import path from "path";
-import ejs from "ejs";
 
 // Not changing
 const GOOGLE_REDIRECT: string = "https://developers.google.com/oauthplayground";
@@ -39,21 +37,11 @@ export const send_message = async (user: any) => {
       },
     });
 
-    // Connecting the ejs file:
-    const OTPVerificationEJS = path.join(__dirname, "../../views/Message.ejs");
-
-    // To render the file:
-    const PassEJSdetails = await ejs.renderFile(OTPVerificationEJS, {
-      name: user?.name,
-      email: user?.email,
-      message: user?.message,
-    });
-
     const mailerOptions = {
       from: user?.email,
       to: "nicsylvia15f@gmail.com",
       subject: "user from Match Prediction Platform",
-      html: PassEJSdetails,
+      html: user?.message,
     };
 
     transporter
