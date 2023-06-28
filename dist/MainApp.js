@@ -12,6 +12,7 @@ const MatchRoutes_1 = __importDefault(require("./Routes/MatchRoutes"));
 const PredictRoutes_1 = __importDefault(require("./Routes/PredictRoutes"));
 const AppError_1 = require("./Utils/AppError");
 const ErrorHandler_1 = require("./Middlewares/Errors/ErrorHandler");
+const MessageRoute_1 = __importDefault(require("./Routes/MessageRoute"));
 const AppConfig = (app) => {
     app.set("view engine", "ejs");
     app.use(express_1.default.json());
@@ -32,6 +33,7 @@ const AppConfig = (app) => {
     // Configuring the routes:
     app.use("/api/users", UserRoutes_1.default);
     app.use("/api", MatchRoutes_1.default);
+    app.use("/api", MessageRoute_1.default);
     app.use("/api", PredictRoutes_1.default);
     app.all("*", (req, res, next) => {
         next(new AppError_1.AppError({

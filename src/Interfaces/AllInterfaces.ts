@@ -35,3 +35,9 @@ export interface Ipredict {
   scoreEntry: string;
   user: {};
 }
+
+export interface IMessage {
+  name: string;
+  email: string;
+  message: string;
+}
