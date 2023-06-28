@@ -17,7 +17,6 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const EnvironmentVariables_1 = require("./EnvironmentVariables");
 const LIVEURI = EnvironmentVariables_1.EnvironmentalVariables.MONGODB_STRING;
 const LOCALURL = "mongodb://0.0.0.0:27017/FootballPredictionServer";
-// done
 const DBCONNECTION = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const conn = yield mongoose_1.default.connect(LIVEURI);
