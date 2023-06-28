@@ -4,7 +4,6 @@ import { EnvironmentalVariables } from "./EnvironmentVariables";
 
 const LIVEURI = EnvironmentalVariables.MONGODB_STRING;
 const LOCALURL = "mongodb://0.0.0.0:27017/FootballPredictionServer";
-// done
 
 export const DBCONNECTION = async () => {
   try {
